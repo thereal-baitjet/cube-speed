@@ -17,6 +17,7 @@ export function Leaderboard({
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [authError, setAuthError] = useState<string | null>(null)
   const [user, setUser] = useState<{ id: string; email?: string; user_metadata?: { full_name?: string; name?: string } } | null>(null)
 
   useEffect(() => {
@@ -32,6 +33,10 @@ export function Leaderboard({
 
   useEffect(() => {
     if (!supabase) return
+    // Recover session from URL hash after OAuth redirect, then validate with server
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+    })
     supabase.auth.getUser().then(({ data: { user: u } }) => setUser(u))
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
@@ -52,8 +57,21 @@ export function Leaderboard({
     } else setSubmitError(result.error ?? 'Failed')
   }
 
-  const signIn = () => {
-    supabase?.auth.signInWithOAuth({ provider: 'google' })
+  const signIn = async () => {
+    if (!supabase) return
+    setAuthError(null)
+    const redirectTo = `${window.location.origin}/auth/callback`
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo },
+    })
+    if (error) {
+      if (error.message?.includes('not enabled') || error.message?.includes('Unsupported provider') || (error as { code?: string }).code === '400') {
+        setAuthError('Google sign-in is not enabled. In Supabase: Authentication → Providers → Google → enable and add Client ID & Secret.')
+      } else {
+        setAuthError(error.message ?? 'Sign-in failed')
+      }
+    }
   }
 
   const signOut = () => {
@@ -75,9 +93,18 @@ export function Leaderboard({
         <p className="leaderboard-hint">Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to enable.</p>
       )}
       {supabase && !user && (
-        <button type="button" className="btn btn-google" onClick={signIn}>
-          Sign in with Google
-        </button>
+        <>
+          <button type="button" className="btn btn-google" onClick={signIn}>
+            Sign in with Google
+          </button>
+          <p className="leaderboard-hint redirect-hint">
+            Add this in Supabase → Auth → URL Configuration → Redirect URLs:
+          </p>
+          <code className="redirect-uri">
+            {typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : ''}
+          </code>
+          {authError && <p className="submit-error">{authError}</p>}
+        </>
       )}
       {supabase && user && justSolvedTimeMs != null && (
         <button

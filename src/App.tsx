@@ -2,6 +2,7 @@
  * Rubik's Cube Speed Game — Baitjet & santosSuccess
  */
 import { useState, useCallback } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { CubeVisual } from './cube/CubeVisual'
@@ -17,6 +18,7 @@ import {
 import { useTimer } from './hooks/useTimer'
 import { useKeyboardMoves } from './hooks/useKeyboardMoves'
 import { Leaderboard } from './components/Leaderboard'
+import { AuthCallback } from './components/AuthCallback'
 import './App.css'
 
 const SCRAMBLE_LENGTH = 22
@@ -84,6 +86,9 @@ export default function App() {
   }, [])
 
   return (
+    <Routes>
+      <Route path="/auth/callback" element={<AuthCallback />} />
+      <Route path="/" element={
     <div className="app">
       <header className="header">
         <h1>Rubik's Cube Speed — Baitjet & santosSuccess</h1>
@@ -124,5 +129,7 @@ export default function App() {
         Created by <strong>Baitjet</strong> & <strong>santosSuccess</strong>
       </footer>
     </div>
+      } />
+    </Routes>
   )
 }
