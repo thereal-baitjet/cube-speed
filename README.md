@@ -39,7 +39,7 @@ An animated 3D Rubik's Cube that hovers in the center of the screen. Use the key
 
 **[→ Open app](https://rubiks-cube-game-l9yuefwn8-thereal-baitjets-projects.vercel.app/)**
 
-Production build on Vercel: **https://rubiks-cube-game.vercel.app** **https://rubiks-cube-game-l9yuefwn8-thereal-baitjets-projects.vercel.app**
+Production build on Vercel: **https://rubiks-cube-game-l9yuefwn8-thereal-baitjets-projects.vercel.app**
 
 ## Run locally
 
