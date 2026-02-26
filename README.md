@@ -2,6 +2,8 @@
 
 **By Baitjet & santosSuccess**
 
+**[Live demo →](https://rubiks-cube-game.vercel.app)**
+
 An animated 3D Rubik's Cube that hovers in the center of the screen. Use the keyboard to perform moves, race against the clock, and submit your best times to the leaderboard. Original Rubik's Cube colors and Supabase + Google Auth for the high-score board.
 
 ## Features
@@ -10,6 +12,10 @@ An animated 3D Rubik's Cube that hovers in the center of the screen. Use the key
 - **Keyboard controls** — R, L, U, D, F, B (Shift + key for counter-clockwise), Space to scramble
 - **Timer** — Starts on first move, stops when the cube is solved
 - **Leaderboard** — Sign in with Google and submit your time; view top times
+
+## Live
+
+Production build on Vercel: **https://rubiks-cube-game.vercel.app**
 
 ## Run locally
 

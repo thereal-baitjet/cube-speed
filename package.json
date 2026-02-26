@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Rubik's Cube speed game — Baitjet & santosSuccess",
   "author": "Baitjet, santosSuccess",
+  "homepage": "https://rubiks-cube-game.vercel.app",
   "type": "module",
   "scripts": {
     "dev": "vite",
